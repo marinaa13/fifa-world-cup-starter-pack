@@ -43,10 +43,10 @@
   position: relative;
   display: flex;
   flex-direction: column-reverse;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 12px;
   aspect-ratio: 3 / 4;
-  padding: 20px 6px;
+  padding: 8px 6px;
   border: 2px solid #fff;
   border-radius: 8px;
   background-color: #2e8b47;
