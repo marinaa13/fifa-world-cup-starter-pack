@@ -2,6 +2,7 @@
 coverage/*
 logs/*
 node_modules/*
+.playwright-mcp/*
 
 helix-importer-ui
 .DS_Store
