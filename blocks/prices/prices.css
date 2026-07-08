@@ -1,0 +1,36 @@
+.prices {
+  overflow-x: auto;
+}
+
+.prices table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.prices th {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: #666;
+  padding: 10px 12px;
+  border-bottom: 2px solid #dadada;
+  white-space: nowrap;
+}
+
+.prices th:first-child {
+  text-align: left;
+}
+
+.prices td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.prices .prices-stage {
+  text-align: left;
+  font-weight: 700;
+}
