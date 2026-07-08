@@ -17,6 +17,11 @@
   color: var(--background-color);
 }
 
+.hero a {
+  color: var(--background-color);
+  text-decoration: underline;
+}
+
 .hero picture {
   position: absolute;
   z-index: -1;
