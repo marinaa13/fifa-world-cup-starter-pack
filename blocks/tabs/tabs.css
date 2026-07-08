@@ -1,0 +1,16 @@
+.tabs .tabs-select {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.tabs-hidden {
+  display: none;
+}
