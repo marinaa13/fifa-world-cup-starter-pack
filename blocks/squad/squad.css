@@ -1,0 +1,99 @@
+.squad .squad-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.squad .squad-positions {
+  display: grid;
+  gap: 16px;
+}
+
+.squad .squad-position {
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.squad .squad-position-label p {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--link-color);
+}
+
+.squad .squad-position-players ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.squad .squad-position-players li {
+  margin-bottom: 4px;
+}
+
+.squad .squad-lineup-heading {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.squad .squad-pitch {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  gap: 12px;
+  aspect-ratio: 3 / 4;
+  padding: 20px 8px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #2e8b47 0%, #257a3d 100%);
+}
+
+.squad .squad-pitch-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.squad .squad-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 64px;
+}
+
+.squad .squad-player-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 2px solid #1a1a2e;
+}
+
+.squad .squad-player-name {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  line-height: 1.1;
+  max-width: 64px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 60%);
+}
+
+@media (width >= 900px) {
+  .squad .squad-layout {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+  }
+
+  .squad .squad-lineup {
+    position: sticky;
+    top: 90px;
+  }
+}
