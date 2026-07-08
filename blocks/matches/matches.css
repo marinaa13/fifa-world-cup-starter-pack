@@ -10,8 +10,29 @@ main .matches {
   gap: 12px;
   padding: 16px;
   border: 1px solid #dadada;
+  border-left: 4px solid var(--link-color);
   border-radius: 8px;
   background-color: var(--background-color);
+}
+
+.matches .matches-row-quarterfinal {
+  border-left-color: #3b63fb;
+  background-color: #f2f5ff;
+}
+
+.matches .matches-row-semifinal {
+  border-left-color: #7b3bfb;
+  background-color: #f7f2ff;
+}
+
+.matches .matches-row-third-place-playoff {
+  border-left-color: #c07a2a;
+  background-color: #fdf6ec;
+}
+
+.matches .matches-row-final {
+  border-left-color: #d4a017;
+  background-color: #fffaeb;
 }
 
 .matches .matches-stage p,
@@ -23,9 +44,26 @@ main .matches {
 .matches .matches-stage p:first-child {
   text-transform: uppercase;
   font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--link-color);
   margin-bottom: 4px;
+}
+
+.matches-row-quarterfinal .matches-stage p:first-child {
+  color: #3b63fb;
+}
+
+.matches-row-semifinal .matches-stage p:first-child {
+  color: #7b3bfb;
+}
+
+.matches-row-third-place-playoff .matches-stage p:first-child {
+  color: #c07a2a;
+}
+
+.matches-row-final .matches-stage p:first-child {
+  color: #a3790f;
 }
 
 .matches .matches-stage p:last-child {

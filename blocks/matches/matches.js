@@ -1,3 +1,5 @@
+import { toClassName } from '../../scripts/aem.js';
+
 const FIELD_LABELS = {
   date: 'Date & Time',
   venue: 'Venue',
@@ -96,7 +98,11 @@ export default function decorate(block) {
     row.classList.add('matches-row');
     const [stageMatch, date, venue, odds] = [...row.children];
 
-    if (stageMatch) stageMatch.classList.add('matches-stage');
+    if (stageMatch) {
+      stageMatch.classList.add('matches-stage');
+      const stageText = stageMatch.querySelector('p:first-child')?.textContent || '';
+      if (stageText) row.classList.add(`matches-row-${toClassName(stageText)}`);
+    }
 
     if (date) {
       date.classList.add('matches-date');
