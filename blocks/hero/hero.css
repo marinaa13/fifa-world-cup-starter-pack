@@ -9,11 +9,17 @@
   min-height: 300px;
 }
 
-.hero h1 {
+.hero h1,
+.hero p {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   color: var(--background-color);
+}
+
+.hero a {
+  color: var(--background-color);
+  text-decoration: underline;
 }
 
 .hero picture {
@@ -28,6 +34,7 @@
   object-fit: cover;
   width: 100%;
   height: 100%;
+  filter: brightness(55%);
 }
 
 @media (width >= 900px) {
