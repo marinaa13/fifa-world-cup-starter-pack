@@ -101,6 +101,10 @@
   gap: 24px;
 }
 
+.standings .standings-round {
+  min-width: 0;
+}
+
 .standings .standings-round h3 {
   margin: 0 0 12px;
   font-size: 1rem;
@@ -147,6 +151,22 @@
 @media (width >= 900px) {
   .standings .standings-groups-panel {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .standings .standings-bracket-panel {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+  }
+
+  .standings .standings-round {
+    flex: 0 0 240px;
+  }
+
+  .standings .standings-match-team {
+    font-size: 0.85rem;
   }
 }
 
