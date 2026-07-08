@@ -1,0 +1,123 @@
+main .matches {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.matches .matches-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #dadada;
+  border-left: 4px solid var(--link-color);
+  border-radius: 8px;
+  background-color: var(--background-color);
+}
+
+.matches .matches-row-quarterfinal {
+  border-left-color: #3b63fb;
+  background-color: #f2f5ff;
+}
+
+.matches .matches-row-semifinal {
+  border-left-color: #7b3bfb;
+  background-color: #f7f2ff;
+}
+
+.matches .matches-row-third-place-playoff {
+  border-left-color: #c07a2a;
+  background-color: #fdf6ec;
+}
+
+.matches .matches-row-final {
+  border-left-color: #d4a017;
+  background-color: #fffaeb;
+}
+
+.matches .matches-stage p,
+.matches .matches-date p,
+.matches .matches-venue p {
+  margin: 0;
+}
+
+.matches .matches-stage p:first-child {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--link-color);
+  margin-bottom: 4px;
+}
+
+.matches-row-quarterfinal .matches-stage p:first-child {
+  color: #3b63fb;
+}
+
+.matches-row-semifinal .matches-stage p:first-child {
+  color: #7b3bfb;
+}
+
+.matches-row-third-place-playoff .matches-stage p:first-child {
+  color: #c07a2a;
+}
+
+.matches-row-final .matches-stage p:first-child {
+  color: #a3790f;
+}
+
+.matches .matches-stage p:last-child {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.matches .matches-field-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #666;
+  margin-bottom: 2px;
+}
+
+.matches .matches-odds-pending {
+  font-style: italic;
+  color: #888;
+}
+
+.matches .matches-odds-live::after {
+  content: "Live";
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  background-color: #1a9c4c;
+  padding: 2px 6px;
+  border-radius: 4px;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+@media (width >= 600px) {
+  .matches .matches-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .matches .matches-row {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+  }
+
+  .matches .matches-odds {
+    text-align: right;
+  }
+
+  .matches .matches-odds-live::after {
+    display: block;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}
