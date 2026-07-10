@@ -1,5 +1,86 @@
 const ROUND_ORDER = ['Round of 32', 'Round of 16', 'Quarterfinal', 'Semifinal', 'Third-place playoff', 'Final'];
 
+// Free public test key, documented at https://www.thesportsdb.com/free_sports_api (demo project).
+const SCORES_API_URL = 'https://www.thesportsdb.com/api/v1/json/3/searchevents.php';
+
+/**
+ * Checks whether a bracket cell holds a real team name rather than a
+ * "Winner X/Y" placeholder for a not-yet-determined participant.
+ * @param {string} name the team cell text
+ * @returns {boolean} true if it's a resolved team name
+ */
+function isResolvedTeam(name) {
+  return Boolean(name) && !name.startsWith('Winner ');
+}
+
+/**
+ * Looks up a single event by team names via TheSportsDB's search endpoint.
+ * @param {string} teamA first team, used as the query's home slot
+ * @param {string} teamB second team, used as the query's away slot
+ * @returns {Promise<object|null>} the matching event, or null if not found
+ */
+async function fetchEvent(teamA, teamB) {
+  const query = [teamA, teamB].map((name) => encodeURIComponent(name.trim().replace(/\s+/g, '_'))).join('_vs_');
+  try {
+    const response = await fetch(`${SCORES_API_URL}?e=${query}`);
+    if (!response.ok) return null;
+    const { event } = await response.json();
+    return event?.[0] || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Looks up a match regardless of which team the source listed first, since
+ * the live fixture's home/away order may not match our stored order.
+ * @param {string} teamA first team as stored in our content
+ * @param {string} teamB second team as stored in our content
+ * @returns {Promise<{event: object, swapped: boolean}|null>} the event and
+ * whether its home/away teams are swapped relative to teamA/teamB
+ */
+async function fetchLiveScore(teamA, teamB) {
+  const forward = await fetchEvent(teamA, teamB);
+  if (forward) return { event: forward, swapped: false };
+  const reversed = await fetchEvent(teamB, teamA);
+  if (reversed) return { event: reversed, swapped: true };
+  return null;
+}
+
+/**
+ * Fetches live/final scores for undecided matches whose participants are
+ * both known, and updates their cards in place. Runs after initial
+ * decoration so it never blocks first render.
+ * @param {{teamA: string, teamB: string, card: Element, teamASpan: Element,
+ * teamBSpan: Element, scoreSpan: Element}[]} entries undecided match cards
+ */
+async function enrichWithLiveScores(entries) {
+  await Promise.all(entries.map(async (entry) => {
+    const result = await fetchLiveScore(entry.teamA, entry.teamB);
+    if (!result) return;
+    const { event, swapped } = result;
+    const { intHomeScore, intAwayScore } = event;
+    if (intHomeScore === null || intHomeScore === undefined
+      || intAwayScore === null || intAwayScore === undefined) return;
+
+    const scoreA = Number(swapped ? intAwayScore : intHomeScore);
+    const scoreB = Number(swapped ? intHomeScore : intAwayScore);
+
+    entry.scoreSpan.textContent = `${scoreA}-${scoreB}`;
+    if (scoreA !== scoreB) {
+      const winnerSpan = scoreA > scoreB ? entry.teamASpan : entry.teamBSpan;
+      winnerSpan.classList.add('standings-winner');
+    }
+
+    if (event.strStatus === 'AET') {
+      const note = document.createElement('p');
+      note.className = 'standings-match-note';
+      note.textContent = 'After extra time';
+      entry.card.append(note);
+    }
+  }));
+}
+
 /**
  * Builds one Flashscore-style group table.
  * @param {string} group group label, e.g. "Group A"
@@ -58,9 +139,11 @@ function buildGroupTable(group, teams) {
  * Builds one knockout round section.
  * @param {string} round round label
  * @param {object[]} matches matches in this round
+ * @param {object[]} liveScoreEntries collector for undecided matches whose
+ * participants are both known, so they can be enriched with a live score
  * @returns {Element} the round wrapper
  */
-function buildRound(round, matches) {
+function buildRound(round, matches, liveScoreEntries) {
   const wrapper = document.createElement('div');
   wrapper.className = 'standings-round';
 
@@ -84,6 +167,18 @@ function buildRound(round, matches) {
       card.append(note);
     }
     wrapper.append(card);
+
+    if (!decided && isResolvedTeam(match.teamA) && isResolvedTeam(match.teamB)) {
+      const [teamASpan, teamBSpan] = card.querySelectorAll('.standings-match-team');
+      liveScoreEntries.push({
+        teamA: match.teamA,
+        teamB: match.teamB,
+        card,
+        teamASpan,
+        teamBSpan,
+        scoreSpan: card.querySelector('.standings-match-score'),
+      });
+    }
   });
 
   return wrapper;
@@ -137,10 +232,11 @@ export default function decorate(block) {
   });
   container.append(groupsPanel);
 
+  const liveScoreEntries = [];
   const bracketPanel = document.createElement('div');
   bracketPanel.className = 'standings-panel standings-bracket-panel standings-panel-hidden';
   ROUND_ORDER.filter((round) => matchesByRound.has(round)).forEach((round) => {
-    bracketPanel.append(buildRound(round, matchesByRound.get(round)));
+    bracketPanel.append(buildRound(round, matchesByRound.get(round), liveScoreEntries));
   });
   container.append(bracketPanel);
 
@@ -152,4 +248,6 @@ export default function decorate(block) {
   });
 
   block.replaceChildren(container);
+
+  if (liveScoreEntries.length) enrichWithLiveScores(liveScoreEntries);
 }
