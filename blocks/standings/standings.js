@@ -222,10 +222,14 @@ function buildRound(round, matches, liveScoreEntries) {
     const card = document.createElement('div');
     card.className = 'standings-match';
     const decided = Boolean(match.score);
+    // "Winner X/Y" placeholders have no spaces around the slash; give the
+    // browser an explicit break point there instead of hyphenating mid-word.
+    const teamA = match.teamA.replace('/', '/<wbr>');
+    const teamB = match.teamB.replace('/', '/<wbr>');
     card.innerHTML = `
-      <span class="standings-match-team${match.winner === match.teamA ? ' standings-winner' : ''}">${match.teamA}</span>
+      <span class="standings-match-team${match.winner === match.teamA ? ' standings-winner' : ''}">${teamA}</span>
       <span class="standings-match-score">${decided ? match.score : 'vs'}</span>
-      <span class="standings-match-team${match.winner === match.teamB ? ' standings-winner' : ''}">${match.teamB}</span>
+      <span class="standings-match-team${match.winner === match.teamB ? ' standings-winner' : ''}">${teamB}</span>
     `;
     if (match.note) {
       const note = document.createElement('p');
