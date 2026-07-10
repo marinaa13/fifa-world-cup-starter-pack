@@ -135,6 +135,73 @@ function buildGroupTable(group, teams) {
   return wrapper;
 }
 
+// Best-ranked third-placed teams that advance alongside group winners/runners-up.
+const THIRD_PLACE_QUALIFIERS = 8;
+
+/**
+ * Builds the "best third-placed teams" ranking table shown below the group
+ * tables, highlighting the ones that advanced to the knockout stage.
+ * @param {Map<string, object[]>} groups all groups, each an array of teams
+ * in final standing order (so index 2 is that group's third-placed team)
+ * @returns {Element} the ranking table wrapper
+ */
+function buildThirdPlaceTable(groups) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'standings-group standings-third-place';
+
+  const heading = document.createElement('h3');
+  heading.textContent = 'Best Third-Placed Teams';
+  wrapper.append(heading);
+
+  const thirdPlaceTeams = [...groups.entries()]
+    .filter(([, teams]) => teams.length > 2)
+    .map(([group, teams]) => ({ ...teams[2], group }))
+    .sort((a, b) => (Number(b.pts) - Number(a.pts))
+      || ((Number(b.gf) - Number(b.ga)) - (Number(a.gf) - Number(a.ga)))
+      || (Number(b.gf) - Number(a.gf)));
+
+  const table = document.createElement('table');
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Group</th>
+        <th>Team</th>
+        <th>P</th>
+        <th>W</th>
+        <th>D</th>
+        <th>L</th>
+        <th>G</th>
+        <th>Pts</th>
+      </tr>
+    </thead>
+  `;
+
+  const tbody = document.createElement('tbody');
+  thirdPlaceTeams.forEach((team, i) => {
+    const tr = document.createElement('tr');
+    if (i < THIRD_PLACE_QUALIFIERS) tr.classList.add('standings-qualified');
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td>${team.group}</td>
+      <td class="standings-team">
+        <img src="https://flagcdn.com/w40/${team.iso}.png" alt="">
+        <span>${team.name}</span>
+      </td>
+      <td>${team.p}</td>
+      <td>${team.w}</td>
+      <td>${team.d}</td>
+      <td>${team.l}</td>
+      <td>${team.gf}:${team.ga}</td>
+      <td>${team.pts}</td>
+    `;
+    tbody.append(tr);
+  });
+  table.append(tbody);
+  wrapper.append(table);
+  return wrapper;
+}
+
 /**
  * Builds one knockout round section.
  * @param {string} round round label
@@ -230,6 +297,7 @@ export default function decorate(block) {
   [...groups.keys()].sort().forEach((group) => {
     groupsPanel.append(buildGroupTable(group, groups.get(group)));
   });
+  if (groups.size) groupsPanel.append(buildThirdPlaceTable(groups));
   container.append(groupsPanel);
 
   const liveScoreEntries = [];

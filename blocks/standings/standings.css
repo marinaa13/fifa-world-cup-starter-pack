@@ -180,3 +180,13 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+.standings .standings-third-place table {
+  min-width: 480px;
+}
+
+@media (width >= 900px) {
+  .standings .standings-third-place {
+    grid-column: 1 / -1;
+  }
+}

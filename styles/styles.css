@@ -323,3 +323,14 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+/* pages with no hero (e.g. team detail pages) get a plain light band instead */
+main > .section:first-of-type:not(:has(.hero)) {
+  background-color: var(--light-color);
+  padding: 40px 0;
+}
+
+main > .section:first-of-type:not(:has(.hero)) img {
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+}
