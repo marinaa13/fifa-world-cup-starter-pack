@@ -30,6 +30,7 @@
 }
 
 .standings .standings-group {
+  min-width: 0;
   border: 1px solid #dadada;
   border-radius: 8px;
   padding: 16px;
@@ -77,10 +78,14 @@
   gap: 8px;
   text-align: left !important;
   font-weight: 600;
-  white-space: nowrap;
+}
+
+.standings .standings-team span {
+  min-width: 0;
 }
 
 .standings .standings-team img {
+  flex-shrink: 0;
   width: 20px;
   height: 14px;
   object-fit: cover;
