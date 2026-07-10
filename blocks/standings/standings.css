@@ -127,6 +127,8 @@
 }
 
 .standings .standings-match-team {
+  min-width: 0;
+  overflow-wrap: break-word;
   font-size: 0.95rem;
 }
 
